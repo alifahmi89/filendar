@@ -33,7 +33,7 @@ th
 echo "
 <table>
 <tr>
-	<th style="font-size:28px" colspan="3" style="color:white\;background-color:black">Availability data for station $sta on $year</th>
+	<th style="font-size:18px" colspan="3" style="color:white\;background-color:black">Availability data for station $sta on $year</th>
 </tr>" >> $table
 
 #day name
