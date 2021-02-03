@@ -3,10 +3,18 @@
 # Author  : Ali Fahmi
 # Created : 2020-12-30
 
-[ $# -lt 2 ] && echo "Usage: $0 yyyy mm" && exit 1
+[ $# -lt 4 ] && echo "Usage: $0 yyyy mm path station" && exit 1
+
+#function getpercent()
+#{
+#	sta=	
+#}
 
 thn=$1
 bln=$2
+dir=$3
+sta=$4
+
 table=html/$thn-$bln.html
 #txt=output.txt
 namabln=$(date -d "$thn-$bln-01" +%B)
@@ -63,7 +71,16 @@ do
 		then 
 			tgldir=$(printf "%02d" $tgl)
 			val=$tgldir
-			percent=$(shuf -i 0-100 -n 1)
+
+			#percent=$(shuf -i 0-100 -n 1)
+			if [ ! -d "$dir/$sta" ];
+			then
+				echo "Directory $dir/$sta doesn't exist."
+				exit 1
+			fi
+
+			count=$(ls $home/$sta/$thn/$thn-$bln-$tgldir/*z* | wc -l)
+			percent=$(( $count / 24 * 100 ))
 			
 			#color
 			if (( 0<=$percent && $percent<=24 ))
