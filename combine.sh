@@ -1,10 +1,14 @@
 #!/bin/bash
 # Data availability calendar
-# Author  : Ali Fahmi
-# Created : 2020-12-30
+# Author   : Ali Fahmi
+# Created  : 2020-12-30
+# Modified : 2021-02-03
 
-year=$1
-table=html/$year-all.html
+[ $# -lt 2 ] && echo "Usage: $0 station yyyy" && exit 1
+
+sta=$1
+year=$2
+table=html/${sta}_$year-all.html
 
 echo "
 <style> 
@@ -29,7 +33,7 @@ th
 echo "
 <table>
 <tr>
-	<th style="font-size:28px" colspan="3" style="color:white\;background-color:black">$year Calendar</th>
+	<th style="font-size:28px" colspan="3" style="color:white\;background-color:black">Availability data for station $sta on $year</th>
 </tr>" >> $table
 
 #day name
@@ -41,7 +45,7 @@ do
 	do
 		monum=$(printf "%02d" $(( row * 2 + row + col - 3 )))
 		#echo "row: $row, col: $col, monum: $monum"
-		data=$(cat html/$year-$monum.html)
+		data=$(cat html/${sta}_$year-$monum.html)
 		echo "<td align="center">$data</td>" >> $table
 	done
 	echo "</tr>" >> $table
