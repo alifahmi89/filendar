@@ -1,8 +1,8 @@
 #!/bin/bash
-# Data availability calendar
+# Combine data availability into yearly calendar
 # Author   : Ali Fahmi
 # Created  : 2020-12-30
-# Modified : 2021-02-03
+# Modified : 2021-02-05
 
 [ $# -lt 2 ] && echo "Usage: $0 station yyyy" && exit 1
 
@@ -51,8 +51,8 @@ do
 	echo "</tr>" >> $table
 done
 
+echo "<td align=center style=font-size:10px colspan=3>Generated using <a href="http://github.com/alifahmi89/filendar">filendar</a></td>" >> $table
+
 echo "</table>" >> $table
 echo "Output: $table"
 
-#awk -F';' 'BEGIN { print "<table border="1">" } { print "<tr><td>" $1 "</td><td>" $2 "</td></tr>" } END  \ 
-#	{ print "</table>" }' $txt > $html
