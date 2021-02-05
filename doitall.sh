@@ -1,16 +1,18 @@
-[ $# -lt 1 ] && echo "Usage: $0 filepath" && exit 1
+[ $# -lt 3 ] && echo "Usage: $0 filepath start_year end_year" && exit 1
 
 dir=$1
+startyear=$2
+endyear=$3
 
-for sta in MEA{01..05};
+for sta in $(ls $dir);
 do 
-	for yr in {2013..2020}; 
+	for yr in $(seq $startyear $endyear); 
 	do 
 		for mo in {01..12}; 
 		do 
 			./script.sh $dir $sta $yr $mo
 		done
 
-		./combine $sta $yr
+		./combine.sh $sta $yr
 	done
 done
