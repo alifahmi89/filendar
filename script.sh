@@ -1,8 +1,8 @@
 #!/bin/bash
-# Data availability calendar
+# Create data availability into monthly calendar
 # Author   : Ali Fahmi
 # Created  : 2020-12-30
-# Modified : 2020-02-03
+# Modified : 2020-02-05
 
 [ $# -lt 4 ] && echo "Usage: $0 path station yyyy mm" && exit 1
 
@@ -20,6 +20,8 @@ table=html/${sta}_$thn-$bln.html
 namabln=$(date -d "$thn-$bln-01" +%B)
 #days=( Sun Mon Tue Wed Thu Fri Sat )
 days=( Su Mo Tu We Th Fr Sa )
+
+mkdir -p html
 
 echo "
 <style> 
