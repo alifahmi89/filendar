@@ -2,66 +2,40 @@
 # Create data availability into monthly calendar
 # Author   : Ali Fahmi
 # Created  : 2020-12-30
-# Modified : 2020-02-05
+# Modified : 2021-03-01
 
 [ $# -lt 4 ] && echo "Usage: $0 path station yyyy mm" && exit 1
 
-#function getpercent()
-#{
-#	sta=	
-#}
 
 dir=$1
 sta=$2
 thn=$3
 bln=$4
 
-table=html/${sta}_$thn-$bln.html
+table=monthly/${sta}_$thn-$bln.html
 namabln=$(date -d "$thn-$bln-01" +%B)
 #days=( Sun Mon Tue Wed Thu Fri Sat )
 days=( Su Mo Tu We Th Fr Sa )
 
-mkdir -p html
+mkdir -p monthly
 
-echo "
-<style> 
-table, td, th 
-{
-	border: 1px solid black;
-}
-
-table 
-{
-	border-collapse: collapse; 
-	width: 25%;
-}
-	
-th 
-{
-	height: 30px;
-}
-	
-</style>" > $table
-
-#> $txt
-#echo "<table border=1>" > $table
 echo "
 <table>
 <tr>
-	<th colspan="7" align="center" style="color:white\;background-color:black">$namabln $thn</th>
-</tr>" >> $table
+	<th colspan=\"7\" align=\"center\" style=\"color:white;background-color:black\">$namabln $thn</th>
+</tr>" > $table
 
 #day name
 echo "<tr>" >> $table
 for a in ${days[@]};
 do 
-	echo "<td align="center" style="color:white\;background-color:gray">$a</td>" >> $table
+	echo -e "\t<td align=\"center\" style=\"color:white ;background-color:gray\">$a</td>" >> $table
 done
 echo "</tr>" >> $table
 
 for week in {1..6};
 do
-	data=""
+	echo "<tr>" >> $table
 
 	for day in {1..7}; 
 	do 
@@ -82,35 +56,36 @@ do
 			fi
 
 			count=$(ls $dir/$sta/$thn/$thn-$bln-$tgldir/*z* | wc -l)
-			percent=$(( $count / 24 * 100 ))
+			#percent=$(printf %.1f "$(( 10**3 $count / 24 * 100 ))e-3")
 			
 			#color
-			if (( 0<=$percent && $percent<=24 ))
+			if (( $count == 0 ))
 			then
 				color=red
-			elif ((	25<=$percent && $percent<=49 ))
+			elif ((	1<=$count && $count<=8 ))
 			then
 				color=orange
-			elif (( 50<=$percent && $percent<=74 ))
+			elif (( 9<=$count && $count<=16 ))
 			then
 				color=yellow
-			else
+			elif (( 17<=$count && $count<=24 ))
+			then
 				color=lime
+			else
+				color=cyan
 			fi
 
-			echo "$thn-$bln-$tgldir;$percent" #| tee -a $txt 2>&1
+			echo "$sta;$thn-$bln-$tgldir;$count" #| tee -a $txt 2>&1
 		else
 			echo "[ ]"
 			val="&nbsp;"
 			color=lightgrey
 		fi
-		data="$data<td align="center" style="background-color:$color">$val</td>"
+
+		echo -e "\t<td align=\"center\" style=\"background-color:$color\">$val</td>" >> $table
 	done
-	row="<tr>$data</tr>"
-	echo "$row" >> $table
+
+	echo "</tr>" >> $table
 done
 
 echo "</table>" >> $table
-
-#awk -F';' 'BEGIN { print "<table border="1">" } { print "<tr><td>" $1 "</td><td>" $2 "</td></tr>" } END  \ 
-#	{ print "</table>" }' $txt > $html
